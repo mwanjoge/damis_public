@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCountryRequest;
 use App\Http\Requests\UpdateCountryRequest;
 use App\Models\Country;
+use Illuminate\Support\Facades\Http;
 
 class CountryController extends Controller
 {
@@ -29,7 +30,19 @@ class CountryController extends Controller
      */
     public function store(StoreCountryRequest $request)
     {
-        //
+        $country = Country::query()->create($request->all());
+        Http::backOffice()->post('acknowledge',[
+            'status' => 'success',
+            'message' => 'Country created successfully',
+            'data' => [
+                'id' => $country->id,
+                'name' => $country->name,
+                'code' => $country->code,
+                'phone_code' => $country->phone_code,
+                'synced' => true
+            ]
+        ]);
+
     }
 
     /**

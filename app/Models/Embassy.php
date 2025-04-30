@@ -9,4 +9,11 @@ class Embassy extends Model
 {
     /** @use HasFactory<\Database\Factories\EmbassyFactory> */
     use HasFactory;
+    protected $fillable = [
+        'id',
+        'name',
+        'type',
+        'is_active',
+        'synced',
+    ];
 }

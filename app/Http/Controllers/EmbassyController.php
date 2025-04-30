@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreEmbassyRequest;
 use App\Http\Requests\UpdateEmbassyRequest;
 use App\Models\Embassy;
+use Illuminate\Support\Facades\Http;
 
 class EmbassyController extends Controller
 {
@@ -29,7 +30,26 @@ class EmbassyController extends Controller
      */
     public function store(StoreEmbassyRequest $request)
     {
-        //
+        $embassy = new Embassy();
+        $embassy->id = $request->id;
+        $embassy->name = $request->name;
+        $embassy->type = $request->type;
+        $embassy->synced = false; // Default value
+        $embassy->save();
+
+        Http::backOffice()->post('acknowledge',[
+            'status' => 'success',
+            'message' => 'Embassy created successfully',
+            'data' => [
+                'id' => $embassy->id,
+                'name' => $embassy->name,
+                'type' => $embassy->type,
+                'is_active' => $embassy->is_active,
+                'synced' => $embassy->synced,
+            ]
+        ]);
+
+        return response()->json(['message' => 'Embassy created successfully', 'data' => $embassy], 201);
     }
 
     /**
