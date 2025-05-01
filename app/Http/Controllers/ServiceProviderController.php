@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreServiceProviderRequest;
 use App\Http\Requests\UpdateServiceProviderRequest;
 use App\Models\ServiceProvider;
+use Illuminate\Support\Facades\DB;
 
 class ServiceProviderController extends Controller
 {
@@ -13,7 +14,7 @@ class ServiceProviderController extends Controller
      */
     public function index()
     {
-        //
+        return view('service_providers.index');
     }
 
     /**
@@ -29,7 +30,25 @@ class ServiceProviderController extends Controller
      */
     public function store(StoreServiceProviderRequest $request)
     {
-        //
+        DB::transaction(function () use ($request) {
+            $serviceProvider = ServiceProvider::query()
+            ->create([
+                'name' => $request->name,
+                'account_id' => $request->account_id,
+            ]);
+
+            if($request->service){
+                foreach ($request->service as $service) {
+                    $serviceProvider->services()
+                        ->create(
+                            [
+                                'name' => $service,
+                                'service_provider_id' => $serviceProvider->id,
+                                'account_id' => $request->account_id
+                            ]);
+                }
+            }
+        });
     }
 
     /**

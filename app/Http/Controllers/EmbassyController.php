@@ -6,6 +6,7 @@ use App\Http\Requests\StoreEmbassyRequest;
 use App\Http\Requests\UpdateEmbassyRequest;
 use App\Models\Embassy;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class EmbassyController extends Controller
 {
@@ -37,7 +38,7 @@ class EmbassyController extends Controller
         $embassy->synced = false; // Default value
         $embassy->save();
 
-        Http::backOffice()->post('acknowledge',[
+        Http::backOffice()->post('/acknowledge',[
             'status' => 'success',
             'message' => 'Embassy created successfully',
             'data' => [
@@ -49,6 +50,7 @@ class EmbassyController extends Controller
             ]
         ]);
 
+        Log::info('Embassy created');
         return response()->json(['message' => 'Embassy created successfully', 'data' => $embassy], 201);
     }
 
