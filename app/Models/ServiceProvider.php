@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class ServiceProvider extends Model
 {
-    /** @use HasFactory<\Database\Factories\ServiceProviderFactory> */
-    use HasFactory;
+   protected $guarded = [];
+
+   public function services()
+   {
+       return $this->hasMany(Service::class);
+   }
 }

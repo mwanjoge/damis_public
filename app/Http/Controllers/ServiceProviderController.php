@@ -6,6 +6,8 @@ use App\Http\Requests\StoreServiceProviderRequest;
 use App\Http\Requests\UpdateServiceProviderRequest;
 use App\Models\ServiceProvider;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class ServiceProviderController extends Controller
 {
@@ -30,25 +32,37 @@ class ServiceProviderController extends Controller
      */
     public function store(StoreServiceProviderRequest $request)
     {
-        DB::transaction(function () use ($request) {
+        Log::info('Pushing service provider data to public server');
+        //DB::transaction(function () use ($request) {
             $serviceProvider = ServiceProvider::query()
             ->create([
                 'name' => $request->name,
-                'account_id' => $request->account_id,
+                'id' => $request->id,
             ]);
 
-            if($request->service){
-                foreach ($request->service as $service) {
+            if($request->services){
+                foreach ($request->services as $service) {
                     $serviceProvider->services()
                         ->create(
                             [
-                                'name' => $service,
-                                'service_provider_id' => $serviceProvider->id,
-                                'account_id' => $request->account_id
+                                'name' => $service['name'],
+                                'service_provider_id' => $serviceProvider->id
                             ]);
                 }
             }
-        });
+            Http::backOffice()->post('/acknowledge',[
+                'status' => 'success',
+                'message' => 'Service provider and its services has been created successfully',
+                'data' => [
+                    'id' => $serviceProvider->id,
+                    'name' => $serviceProvider->name,
+                    'synced' => $serviceProvider->synced,
+                    'services' => $serviceProvider->services,
+                ]
+            ]);
+
+            return response()->json(['message' => 'Service provider created successfully', 'data' => $serviceProvider], 201);
+        //});
     }
 
     /**
