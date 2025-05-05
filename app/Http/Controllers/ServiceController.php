@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
+use Illuminate\Support\Facades\Log;
 use App\Models\Service;
 
 class ServiceController extends Controller
@@ -29,7 +30,11 @@ class ServiceController extends Controller
      */
     public function store(StoreServiceRequest $request)
     {
-        //
+        Service::create([
+            'name' => $request->name,
+            'id' => $request->id,
+            'service_provider_id' => $request->service_provider_id,
+        ]);
     }
 
     /**
