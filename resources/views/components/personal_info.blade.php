@@ -1,7 +1,7 @@
 <div class="step step-personal-info">
     <div class="mb-4 text-center">
-        <h4 class="text-primary">Personal Information</h4>
-        <p class="text-muted">Fill in your personal details accurately.</p>
+        <h4 class="text-primary">Contact Information</h4>
+        <p class="text-muted">Fill in your contact details accurately.</p>
     </div>
 
     <div class="mb-3">
@@ -11,12 +11,12 @@
     <div class="row mb-3">
         <div class="col-md-6">
             <label for="phone" class="form-label">Phone Number</label>
-            <input type="tel" class="form-control" id="phone" name="phone" required>
+            <input type="tel" class="form-control" id="phone" name="phone">
         </div>
         
         <div class="col-md-6">
             <label for="email" class="form-label">Email Address</label>
-            <input type="email" class="form-control" id="email" name="email">
+            <input type="email" class="form-control" id="email" name="email" required>
         </div>
     </div>
     

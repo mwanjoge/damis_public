@@ -36,7 +36,7 @@
 
                           
                         <div class="d-flex justify-content-center">
-                            <a href="{{ route('request') }}" class="next">Start New Request</a>
+                            <a href="{{ route('request.index') }}" class="next">Start New Request</a>
                         </div>
                     </div>
 

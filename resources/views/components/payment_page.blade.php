@@ -1,23 +1,40 @@
 <div class="step step-payment-confirm">
-    <div class="mb-4 text-center">
-        <h4 class="text-primary">Payment Information</h4>
-        <p class="text-muted">Review your total and confirm your payment.</p>
+    <div class="d-flex align-items-center mb-4">
+        <i class="ri-shield-check-fill text-primary display-6 me-2"></i>
+        <h4 class="mb-0">Payment Information</h4>
+    </div>
+    <p class="text-muted">Review your total and confirm your payment.</p>
+
+    <div class="row g-3">
+        <div class="col-sm-6">
+            <div class="card border shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-title">Control Number</h6>
+                    <p class="card-text">9928928888</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card border shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-title">Total Amount (TZS)</h6>
+                    <p class="card-text">5000</p>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="mb-3">
-        <label class="form-label">Control Number</label>
-        <input type="text" class="form-control" name="control_number" value="{{ $controlNumber }}" readonly>
+    <div class="mt-4">
+        <div class="card border shadow-sm">
+            <div class="card-body">
+                <h6 class="card-title">Status</h6>
+                <p class="card-text">Pending</p>
+            </div>
+        </div>
     </div>
 
-    <div class="mb-3">
-        <label class="form-label">Total Amount (TZS)</label>
-        <input type="text" class="form-control" name="total_amount" value="{{ $totalAmount }}" readonly>
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary w-100">Complete Request</button>
     </div>
-
-    <div class="form-check form-switch mb-3">
-        <input class="form-check-input" type="checkbox" id="confirmPayment" required>
-        <label class="form-check-label" for="confirmPayment">I confirm I have paid using the control number</label>
-    </div>
-
-    <button type="submit" class="btn btn-success w-100">Complete Request</button>
 </div>
+

@@ -9,4 +9,16 @@ class Member extends Model
 {
     /** @use HasFactory<\Database\Factories\MemberFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'email',
+        'phone',
+        'account_id',
+    ];
+
+    public function request()
+    {
+        return $this->hasMany(Request::class);
+    }
 }

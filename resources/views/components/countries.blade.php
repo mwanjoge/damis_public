@@ -7,9 +7,14 @@
 </div>
 
 <div class="row" id="country-selection">
+    <input type="hidden" name="country_id" id="selected-country-id">
+
     @foreach ($countries as $country)
         <div class="col-md-3 col-sm-6 mb-4 country-item">
-            <div class="country-card p-3 text-center h-100" data-country-name="{{ Str::title($country->name) }}">
+            <div class="country-card p-3 text-center h-100"
+            data-country-name="{{ Str::title($country->name) }}"
+            data-country="{{ $country->id }}">
+       
                 <div class="fw-semibold">{{ Str::title($country->name) }}</div>
             </div>
         </div>
