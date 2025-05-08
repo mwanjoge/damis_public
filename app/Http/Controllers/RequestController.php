@@ -124,7 +124,7 @@ class RequestController extends Controller
 
     $mainRequest = \App\Models\Request::with(['requestItems', 'member'])
     ->where('tracking_number', $tracking)->first();
-// dd($mainRequest, $tracking);
+ dd($mainRequest);
     if (!$mainRequest) {
         return redirect()->back()->withErrors(['tracking_number' => 'Request not found.']);
     }
