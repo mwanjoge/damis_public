@@ -13,4 +13,9 @@ class Service extends Model
     {
         return $this->belongsTo(ServiceProvider::class);
     }
+
+    public function requestItems()
+    {
+        return $this->hasMany(\App\Models\RequestItem::class);
+    }
 }

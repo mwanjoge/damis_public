@@ -118,28 +118,61 @@ class RequestController extends Controller
     }
 
     public function getRequest(\Illuminate\Http\Request $request)
-{
-    $tracking = $request->input('trackingNumber');
+    {
+        $tracking = $request->input('trackingNumber');
 
 
-    $mainRequest = \App\Models\Request::with(['requestItems', 'member'])
-    ->where('tracking_number', $tracking)->first();
- dd($mainRequest);
-    if (!$mainRequest) {
-        return redirect()->back()->withErrors(['tracking_number' => 'Request not found.']);
+        $mainRequest = \App\Models\Request::with(['requestItems', 'member', 'service'])
+            ->where('tracking_number', $tracking)->first();
+        if (!$mainRequest) {
+            return redirect()->back()->withErrors(['tracking_number' => 'Request not found.']);
+        }
+        // dd($mainRequest);
+        // Return with data and force open Status tab
+        return view('components.request_tracker', [
+            'mainRequest' => $mainRequest,
+            'defaultStep' => 7, // Open Status tab
+        ]);
     }
 
-    // Return with data and force open Status tab
-    return view('request', [
-        'mainRequest' => $mainRequest,
-        'defaultStep' => 7, // Open Status tab
-    ]);
-}
+    public function editAttachment($trackingNumber)
+    {
+        $mainRequest = \App\Models\Request::with(['requestItems', 'member'])
+            ->where('tracking_number', $trackingNumber)
+            ->firstOrFail();
+
+        return view('requests.status', [
+            'mainRequest' => $mainRequest,
+            'defaultStep' => 7,
+        ]);
+    }
+
+
+    public function updateAttachment(\Illuminate\Http\Request $request, \App\Models\RequestItem $item)
+    {
+        $validated = $request->validate([
+            'certificate_holder_name' => 'required|string',
+            'certificate_index_number' => 'nullable|string',
+            'attachment' => 'required|file|mimes:pdf|max:10240',
+        ]);
+
+        if ($request->hasFile('attachment') && $request->file('attachment')->isValid()) {
+            $path = $request->file('attachment')->store('requests/documents', 'public');
+            $item->update([
+                'certificate_holder_name' => $validated['certificate_holder_name'],
+                'certificate_index_number' => $validated['certificate_index_number'],
+                'attachment' => $path,
+                'status' => 'resubmitted', 
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Document updated successfully.');
+    }
 
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
+    public function show(\Illuminate\Http\Request $request)
     {
         //
     }
@@ -147,7 +180,7 @@ class RequestController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Request $request)
+    public function edit(\Illuminate\Http\Request $request)
     {
         //
     }
@@ -163,7 +196,7 @@ class RequestController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request)
+    public function destroy(\Illuminate\Http\Request $request)
     {
         //
     }

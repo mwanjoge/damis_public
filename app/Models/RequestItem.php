@@ -16,4 +16,15 @@ class RequestItem extends Model
     {
         return $this->belongsTo(Request::class);
     }
+
+    public function serviceProvider()
+    {
+        return $this->belongsTo(ServiceProvider::class);
+    }
+
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
+    }
+
 }

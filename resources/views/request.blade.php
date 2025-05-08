@@ -154,6 +154,7 @@
                                     </div>
                                 </div>
                             </form>
+                            
                                 {{-- Payment Page --}}
                                 <div class="tab-pane fade" id="step6">
                                     @include('components.payment_page')

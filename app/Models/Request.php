@@ -32,5 +32,8 @@ class Request extends Model
         return $this->hasMany(RequestItem::class);
     }
 
-
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
+    }
 }
